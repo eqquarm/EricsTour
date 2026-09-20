@@ -2,10 +2,10 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 #registered tourism.csv inside the data folder
-df = pd.read_csv("tourism_project/data/tourism.csv") 
+df = pd.read_csv("tourism_project/data/tourism.csv")
 
 #complete the code: drop the customer identifier column, it is not a predictive feature
-df.drop(columns=['CustomerID', 'Unnamed: 0'], inplace=True)   
+df.drop(columns=['CustomerID', 'Unnamed: 0'], inplace=True)
 
 # NOTE: categorical columns are intentionally left as raw strings.
 # The training pipeline one-hot-encodes them, and the Streamlit app also sends
@@ -13,7 +13,7 @@ df.drop(columns=['CustomerID', 'Unnamed: 0'], inplace=True)
 # and serving use different representations, silently breaking predictions.
 
 # complete the code to set the name of the column to predict (whether customer purchased the package), 1 if the customer purchased the package, else 0
-target = "ProdTaken" 
+target = "ProdTaken"
 X = df.drop(columns=[target])
 y = df[target]
 
