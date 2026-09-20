@@ -70,7 +70,8 @@ jobs:
           nohup mlflow ui --host 0.0.0.0 --port 5000 &
           sleep 5
       - name: Model Building
-        run: python tourism_project/model_building/train.py
+        working-directory: tourism_project # Add this line to change the working directory
+        run: python model_building/train.py
       - name: Commit Trained Model
         run: |
           git config user.name "github-actions[bot]"
