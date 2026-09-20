@@ -12,7 +12,7 @@ mlflow.set_experiment("Tourism_Prediction_Experiment")
 
 # Load the dataset using a path relative to the tourism_project directory
 # In the workflow, we run this from the project root using 'python -m model_building.train'
-df = pd.read_csv("data/tourism.csv")
+df = pd.read_csv("tourism_project/data/tourism.csv")
 df = df.drop(columns=["CustomerID", "Unnamed: 0"])
 target_col = "ProdTaken"
 X = df.drop(columns=[target_col])
