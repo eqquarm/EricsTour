@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.9" # Changed to 3.9 to match Dockerfile
       - name: Install Dependencies
-        run: pip install -r tourism_project/requirements.txt
+        run: pip install --no-cache-dir --upgrade --force-reinstall -r tourism_project/requirements.txt
       - name: Register Dataset
         run: python tourism_project/data/data_register.py
       - name: Upload Registered Dataset
@@ -38,7 +38,7 @@ jobs:
         with:
           python-version: "3.9" # Changed to 3.9 to match Dockerfile
       - name: Install Dependencies
-        run: pip install -r tourism_project/requirements.txt
+        run: pip install --no-cache-dir --upgrade --force-reinstall -r tourism_project/requirements.txt
       - name: Run Data Preparation
         run: python tourism_project/model_building/prep.py
       - name: Upload Train Test Splits
@@ -60,7 +60,7 @@ jobs:
         with:
           python-version: "3.9" # Changed to 3.9 to match Dockerfile
       - name: Install Dependencies
-        run: pip install -r tourism_project/requirements.txt
+        run: pip install --no-cache-dir --upgrade --force-reinstall -r tourism_project/requirements.txt
       - name: Download Train Test Splits
         uses: actions/download-artifact@v4
         with:
@@ -70,7 +70,8 @@ jobs:
           nohup mlflow ui --host 0.0.0.0 --port 5000 &
           sleep 5
       - name: Model Building
-        run: python tourism_project/model_building/train.py
+        working-directory: tourism_project # Add this line to change the working directory
+        run: python -m model_building.train
       - name: Commit Trained Model
         run: |
           git config user.name "github-actions[bot]"
