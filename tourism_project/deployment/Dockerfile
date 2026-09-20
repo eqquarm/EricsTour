@@ -18,4 +18,4 @@ COPY tourism_project/deployment/xgb_model.joblib .
 EXPOSE 8501
 
 # Command to run the Streamlit application
-ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=", "0.0.0.0", "--server.enableXsrfProtection=false"]
+ENTRYPOINT ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=", "0.0.0.0"]
