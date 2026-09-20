@@ -4,7 +4,7 @@ import pandas as pd
 import mlflow
 
 # Import the new utility function
-from model_building.train_utils import run_full_training_pipeline
+from .train_utils import run_full_training_pipeline
 
 # complete the code to set the MLflow tracking URI
 mlflow.set_tracking_uri("http://localhost:5000")
