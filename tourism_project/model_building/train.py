@@ -12,7 +12,7 @@ import joblib
 import mlflow
 
 # complete the code to set the MLflow tracking URI
-mlflow.set_tracking_uri("http://localhost:5000")   
+mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_experiment("Tourism_Prediction_Experiment")     # complete the code to set the MLflow experiment name (same as the dev experimentation cell)
 
 # Xtrain/Xtest/ytrain/ytest are downloaded from the previous job's artifact
