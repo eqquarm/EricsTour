@@ -117,7 +117,7 @@ def run_full_training_pipeline(
             # For a pipeline, you need to access steps by name or index
             # If preprocessor is directly applied, need to rebuild a column transformer for example_input
             # Let's directly apply preprocessor to the example_input if it's a make_column_transformer
-            processed_example_input_df = pd.DataFrame(preprocessor.fit_transform(example_input), 
+            processed_example_input_df = pd.DataFrame(preprocessor.fit_transform(example_input),
                                                       columns=preprocessor.get_feature_names_out())
             predictions = best_model.predict(processed_example_input_df) # Predict on processed example
             signature = infer_signature(processed_example_input_df, predictions)
