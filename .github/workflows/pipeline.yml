@@ -71,13 +71,11 @@ jobs:
           sleep 5
       - name: Model Building
         run: python tourism_project/model_building/train.py
-      - name: Commit Trained Model
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add tourism_project/deployment/*.joblib
-          git commit -m "Add trained model [skip ci]" || echo "No changes to commit"
-          git push
+      - name: Upload Trained Model
+        uses: actions/upload-artifact@v4
+        with:
+          name: trained-model
+          path: tourism_project/deployment/xgb_model.joblib # Path to the model file
 
   build-and-push-docker-image:
     needs: model-traning # This job depends on the model training job to ensure the model is available
@@ -90,6 +88,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Download Trained Model
+        uses: actions/download-artifact@v4
+        with:
+          name: trained-model
+          path: tourism_project/deployment # Download into this existing directory structure
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -97,11 +101,20 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }} # This will provide 'owner/repo_name'
+          tags: |
+            type=raw,value=${{ github.repository | lower }}/streamlit-app:latest
+            type=raw,value=${{ github.repository | lower }}/streamlit-app:${{ github.sha }}
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./tourism_project/deployment # Path to the Dockerfile context (where Dockerfile and app live)
+          context: . # Changed context to repository root
+          file: ./tourism_project/deployment/Dockerfile # Explicitly specify the Dockerfile path
           push: true
-          tags: ghcr.io/${{ github.repository }}/streamlit-app:latest
-          # Set a unique tag for the image, e.g., using commit SHA
-          # tags: ghcr.io/${{ github.repository }}/streamlit-app:${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
