@@ -114,6 +114,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: . # Changed context to repository root
+          file: ./tourism_project/deployment/Dockerfile # Explicitly specify the Dockerfile path
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
